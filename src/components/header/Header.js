@@ -1,9 +1,15 @@
 import React from 'react'
 import './Header.scss'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import logo from '../../assets/crown.svg'
+import { auth } from '../../firebase/firebaseUtils'
 
-const Header = () => {
+const Header = ({ currentUser, history }) => {
+  const handleSignOut = () => {
+    auth.signOut()
+    history.push('/')
+  }
+
   return (
     <div className='header'>
       <Link className='logo-container' to='/'>
@@ -16,9 +22,18 @@ const Header = () => {
         <Link className='option' to='/shop'>
           contact
         </Link>
+        {currentUser ? (
+          <div className='option' onClick={handleSignOut}>
+            sign out
+          </div>
+        ) : (
+          <Link className='option' to='/signin'>
+            sign in
+          </Link>
+        )}
       </div>
     </div>
   )
 }
 
-export default Header
+export default withRouter(Header)
