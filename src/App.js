@@ -3,14 +3,16 @@ import { connect } from 'react-redux'
 import { auth, createUserProfileDocument } from './firebase/firebaseUtils'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { setCurrentUser } from './redux/user/user-actions'
+import { createStructuredSelector } from 'reselect'
 import HomePage from './pages/homepage/HomePage'
 import ShopPage from './pages/shoppage/ShopPage'
 import Header from './components/header/Header'
 import SignInAndUpPage from './pages/signin-signup/SignInAndUpPage'
 import './App.css'
+import { selectCurrentUser } from './redux/user/user-selectors'
 
-const mapState = state => ({
-  currentUser: state.user.currentUser
+const mapState = createStructuredSelector({
+  currentUser: selectCurrentUser
 })
 
 const mapDispatch = dispatch => ({

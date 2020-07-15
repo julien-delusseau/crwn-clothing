@@ -1,15 +1,18 @@
 import React from 'react'
-import './Header.scss'
 import { Link } from 'react-router-dom'
-import logo from '../../assets/crown.svg'
+import { createStructuredSelector } from 'reselect'
 import { auth } from '../../firebase/firebaseUtils'
 import { connect } from 'react-redux'
+import { selectCurrentUser } from '../../redux/user/user-selectors'
+import { selectHidden } from '../../redux/cart/cart-selectors'
 import CartIcon from '../cart-icon/CartIcon'
 import CartDropdown from '../cart-dropdown/CartDropdown'
+import logo from '../../assets/crown.svg'
+import './Header.scss'
 
-const mapState = state => ({
-  currentUser: state.user.currentUser,
-  cartHidden: state.cart.hidden
+const mapState = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  cartHidden: selectHidden
 })
 
 const Header = ({ currentUser, cartHidden }) => {
