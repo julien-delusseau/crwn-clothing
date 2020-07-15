@@ -1,13 +1,17 @@
 import React, { Fragment, Component } from 'react'
 import { connect } from 'react-redux'
 import { auth, createUserProfileDocument } from './firebase/firebaseUtils'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { setCurrentUser } from './redux/user/user-actions'
 import HomePage from './pages/homepage/HomePage'
 import ShopPage from './pages/shoppage/ShopPage'
 import Header from './components/header/Header'
 import SignInAndUpPage from './pages/signin-signup/SignInAndUpPage'
 import './App.css'
+
+const mapState = state => ({
+  currentUser: state.user.currentUser
+})
 
 const mapDispatch = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
@@ -49,7 +53,13 @@ class App extends Component {
         <Header />
         <Switch>
           <Route exact path='/' component={HomePage} />
-          <Route path='/signin' component={SignInAndUpPage} />
+          <Route
+            exact
+            path='/signin'
+            render={() =>
+              this.props.currentUser ? <Redirect to='/' /> : <SignInAndUpPage />
+            }
+          />
           <Route path='/shop' component={ShopPage} />
         </Switch>
       </Fragment>
@@ -57,4 +67,4 @@ class App extends Component {
   }
 }
 
-export default connect(null, mapDispatch)(App)
+export default connect(mapState, mapDispatch)(App)
