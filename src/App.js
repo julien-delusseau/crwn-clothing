@@ -1,26 +1,29 @@
 import React, { Fragment, Component } from 'react'
-import './App.css'
-import HomePage from './pages/homepage/HomePage'
+import { connect } from 'react-redux'
+import { auth, createUserProfileDocument } from './firebase/firebaseUtils'
 import { Route, Switch } from 'react-router-dom'
+import { setCurrentUser } from './redux/user/user-actions'
+import HomePage from './pages/homepage/HomePage'
 import ShopPage from './pages/shoppage/ShopPage'
 import Header from './components/header/Header'
 import SignInAndUpPage from './pages/signin-signup/SignInAndUpPage'
-import { auth, createUserProfileDocument } from './firebase/firebaseUtils'
+import './App.css'
+
+const mapDispatch = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
 
 class App extends Component {
-  state = {
-    currentUser: null
-  }
-
   unsubscribeFromAuth = null
 
   componentDidMount = () => {
+    const { setCurrentUser } = this.props
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
       try {
         if (user) {
           const userRef = await createUserProfileDocument(user)
           userRef.onSnapshot(snapshot => {
-            this.setState({
+            setCurrentUser({
               currentUser: {
                 id: snapshot.id,
                 ...snapshot.data()
@@ -28,7 +31,7 @@ class App extends Component {
             })
           })
         } else {
-          this.setState({ currentUser: user })
+          setCurrentUser(user)
         }
       } catch (err) {
         console.error("Error, can't load the current user", err.message)
@@ -41,10 +44,9 @@ class App extends Component {
   }
 
   render() {
-    const { currentUser } = this.state
     return (
       <Fragment>
-        <Header currentUser={currentUser} />
+        <Header />
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/signin' component={SignInAndUpPage} />
@@ -55,4 +57,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default connect(null, mapDispatch)(App)

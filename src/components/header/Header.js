@@ -3,6 +3,11 @@ import './Header.scss'
 import { Link, withRouter } from 'react-router-dom'
 import logo from '../../assets/crown.svg'
 import { auth } from '../../firebase/firebaseUtils'
+import { connect } from 'react-redux'
+
+const mapState = state => ({
+  currentUser: state.user.currentUser
+})
 
 const Header = ({ currentUser, history }) => {
   const handleSignOut = () => {
@@ -36,4 +41,4 @@ const Header = ({ currentUser, history }) => {
   )
 }
 
-export default withRouter(Header)
+export default connect(mapState)(withRouter(Header))
