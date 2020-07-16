@@ -7,6 +7,7 @@ import {
   selectCartItemsPrice
 } from '../../redux/cart/cart-selectors'
 import CheckoutItem from '../../components/checkout-item/CheckoutItem'
+import StripeButton from '../../components/stripe-button/StripeButton'
 
 const mapState = createStructuredSelector({
   cartItems: selectCartItems,
@@ -39,6 +40,12 @@ const CheckOut = ({ cartItems, totalPrice }) => {
       <div className='total'>
         <span>TOTAL: {totalPrice} €</span>
       </div>
+      <div className='test-warning'>
+        *Version d'essai, merci d'utiliser cette carte de crédit factice*
+        <br />
+        4242 4242 4242 4242 - Expire: 02/2022 - CVV: 123
+      </div>
+      <StripeButton price={totalPrice} />
     </div>
   )
 }
