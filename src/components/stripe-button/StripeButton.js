@@ -21,7 +21,6 @@ const StripeButton = ({ price }) => {
       currency='EUR'
       billingAddress
       shippingAddress
-      allowRememberMe
       token={onToken}
       stripeKey={PUBLIC_KEY}
     />
