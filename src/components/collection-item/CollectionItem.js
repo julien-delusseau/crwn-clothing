@@ -1,8 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { addItem } from '../../redux/cart/cart-actions'
-import CustomButton from '../custom-button/CustomButton'
-import './CollectionItem.scss'
+import {
+  CollectionItemContainer,
+  BackgroundImage,
+  CollectionFooter,
+  NameContainer,
+  PriceContainer,
+  AddButton
+} from './CollectionItem.styles'
 
 const mapDispatch = dispatch => ({
   addItem: item => dispatch(addItem(item))
@@ -11,19 +17,16 @@ const mapDispatch = dispatch => ({
 const CollectionItem = ({ item, addItem }) => {
   const { name, price, imageUrl } = item
   return (
-    <div className='collection-item'>
-      <div
-        className='image'
-        style={{ background: `url(${imageUrl}) no-repeat center center/cover` }}
-      />
-      <div className='collection-footer'>
-        <span className='name'>{name}</span>
-        <span className='price'>{price} €</span>
-      </div>
-      <CustomButton inverted onClick={() => addItem(item)}>
+    <CollectionItemContainer>
+      <BackgroundImage className='image' imageUrl={imageUrl} />
+      <CollectionFooter>
+        <NameContainer>{name}</NameContainer>
+        <PriceContainer>{price} €</PriceContainer>
+      </CollectionFooter>
+      <AddButton inverted onClick={() => addItem(item)}>
         Add to cart
-      </CustomButton>
-    </div>
+      </AddButton>
+    </CollectionItemContainer>
   )
 }
 
